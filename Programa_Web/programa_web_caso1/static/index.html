@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Aplicación web reproducible para el análisis estadístico del Caso 1: Apolo 11.">
+  <title>Caso 1 · Control estadístico Apolo 11</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">A11</span>
+      <div>
+        <p class="eyebrow">Estadística y Probabilidades · Ingeniería de Software</p>
+        <h1>Control estadístico de navegación</h1>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a class="button button-ghost" href="/api/data.csv">Descargar datos CSV</a>
+      <button class="button button-ghost" id="print-button" type="button">Imprimir resultados</button>
+    </div>
+  </header>
+
+  <nav class="section-nav" aria-label="Secciones del análisis">
+    <a href="#resumen">Resumen</a>
+    <a href="#t1">T1</a>
+    <a href="#t2-t3">T2–T3</a>
+    <a href="#t4">T4</a>
+    <a href="#t5">T5</a>
+    <a href="#t6">T6</a>
+    <a href="#t7">T7</a>
+    <a href="#datos">Datos</a>
+  </nav>
+
+  <main id="contenido">
+    <section class="hero" id="resumen">
+      <div class="hero-copy">
+        <p class="section-kicker">Dictamen automatizado</p>
+        <h2>Aprobar la versión <span class="accent">B</span></h2>
+        <p class="hero-lead" id="decision-reason">Cargando análisis…</p>
+        <div class="decision-badges" id="decision-badges" aria-live="polite"></div>
+      </div>
+      <div class="orbit-card" aria-label="Resultado global">
+        <div class="orbit" aria-hidden="true"><span></span></div>
+        <p class="orbit-label">Versión recomendada</p>
+        <p class="orbit-value">B</p>
+        <p class="orbit-note">Cumple las dos reglas técnicas</p>
+      </div>
+    </section>
+
+    <section class="metrics-grid" aria-label="Indicadores principales">
+      <article class="metric-card metric-a">
+        <div class="metric-heading"><span>Versión A</span><span class="status status-fail">No cumple</span></div>
+        <p class="metric-value" id="a-p90">—</p>
+        <p class="metric-label">P90 · límite 100 ms</p>
+        <div class="mini-track"><span id="a-p90-bar"></span><i class="threshold" title="Límite de 100 ms"></i></div>
+        <p class="metric-detail" id="a-late">—</p>
+      </article>
+      <article class="metric-card metric-b">
+        <div class="metric-heading"><span>Versión B</span><span class="status status-pass">Cumple</span></div>
+        <p class="metric-value" id="b-p90">—</p>
+        <p class="metric-label">P90 · límite 100 ms</p>
+        <div class="mini-track"><span id="b-p90-bar"></span><i class="threshold" title="Límite de 100 ms"></i></div>
+        <p class="metric-detail" id="b-late">—</p>
+      </article>
+      <article class="metric-card metric-neutral">
+        <div class="metric-heading"><span>Estabilidad</span><span class="status status-info">CV</span></div>
+        <p class="metric-value" id="cv-ratio">—</p>
+        <p class="metric-label">menor variabilidad relativa en B</p>
+        <p class="metric-detail" id="cv-detail">—</p>
+      </article>
+    </section>
+
+    <section class="panel" id="t1">
+      <div class="section-heading">
+        <div><p class="section-kicker">T1 · Datos y frecuencias</p><h2>Cómo se distribuyen los tiempos</h2></div>
+        <p>Intervalos enteros, inclusivos y sin superposición. La agrupación resume la concentración y la cola, pero no reemplaza los datos originales.</p>
+      </div>
+      <div class="two-column">
+        <article>
+          <h3>Versión A</h3>
+          <div class="table-wrap"><table id="freq-a"><caption>Distribución de frecuencias de A</caption></table></div>
+        </article>
+        <article>
+          <h3>Versión B</h3>
+          <div class="table-wrap"><table id="freq-b"><caption>Distribución de frecuencias de B</caption></table></div>
+        </article>
+      </div>
+      <div class="load-strip" id="load-strip"></div>
+      <div class="table-wrap support-table"><table id="load-table"><caption>Distribución de frecuencias del tipo de carga</caption></table></div>
+      <p class="note"><strong>Decisión metodológica.</strong> Los límites 20, 60, 61, 100, 101, 140, 141, 180, 181 y 220 se validan automáticamente para que cada valor pertenezca a una sola clase.</p>
+    </section>
+
+    <section class="panel" id="t2-t3">
+      <div class="section-heading">
+        <div><p class="section-kicker">T2–T3 · Posición y dispersión</p><h2>El promedio no cuenta toda la historia</h2></div>
+        <p>A es más rápida en el centro, pero B mantiene una respuesta mucho más estable y controla la cola.</p>
+      </div>
+      <div class="comparison-layout">
+        <div class="table-wrap"><table id="descriptive-table"><caption>Medidas descriptivas con los 24 tiempos originales</caption></table></div>
+        <aside class="insight-card">
+          <p class="section-kicker">Lectura técnica</p>
+          <h3>B sacrifica centro y gana confiabilidad</h3>
+          <p id="descriptive-insight">—</p>
+          <div class="rule-list" id="rule-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="panel" id="t4">
+      <div class="section-heading">
+        <div><p class="section-kicker">T4 · Probabilidades</p><h2>Evento F frente a carga alta H</h2></div>
+        <p><strong>F</strong>: tiempo A &gt; 100 ms. <strong>H</strong>: carga alta. Los 24 escenarios son equiprobables al seleccionar uno uniformemente.</p>
+      </div>
+      <div class="probability-layout">
+        <div>
+          <div class="table-wrap"><table id="contingency-table"><caption>Contingencia de F y H</caption></table></div>
+          <div class="probability-cards" id="probability-cards"></div>
+          <div class="table-wrap support-table"><table id="conditional-table"><caption>Numeradores y denominadores de las probabilidades condicionales</caption></table></div>
+          <p class="note" id="conditional-policy">—</p>
+        </div>
+        <aside class="logic-panel">
+          <h3>Conclusiones lógicas</h3>
+          <div id="logic-results"></div>
+          <h3>Selecciones sucesivas</h3>
+          <dl class="formula-list" id="selection-probabilities"></dl>
+          <p class="note">El 10 % de un especialista es subjetivo; el sorteo uniforme es clásico; 3/24 observado es frecuencial.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="panel split-feature" id="sesgo">
+      <div>
+        <p class="section-kicker">Información adicional</p>
+        <h2>Excluir escenarios cambia el dictamen</h2>
+        <p>Los escenarios 21–24 no representan una etapa posterior: son identificadores. Eliminarlos retira los tres únicos retrasos críticos y crea sesgo de selección.</p>
+      </div>
+      <div class="table-wrap"><table id="bias-table"><caption>Versión A: escenarios 1–20 frente a 1–24</caption></table></div>
+    </section>
+
+    <section class="panel" id="t5">
+      <div class="section-heading">
+        <div><p class="section-kicker">T5 · Valor esperado y detención</p><h2>Detenerse con la información disponible</h2></div>
+        <p>La evidencia económica orienta la revisión, pero no sustituye los requisitos técnicos.</p>
+      </div>
+      <div class="economy-grid">
+        <article class="number-card"><span>Esperanza por revisión</span><strong id="expected-one">—</strong></article>
+        <article class="number-card"><span>Diez revisiones fijas</span><strong id="expected-ten">—</strong></article>
+        <article class="number-card highlight"><span>Saldo al detener</span><strong id="observed-balance">—</strong></article>
+      </div>
+      <div class="table-wrap"><table id="stopping-table"><caption>Secuencia observada hasta la primera barrera</caption></table></div>
+      <p class="note">La secuencia se detiene en la revisión 3; los pasos 4–10 no se observan ni se suman. Una realización favorable puede diferir del promedio de muchas repeticiones.</p>
+    </section>
+
+    <section class="panel" id="t6">
+      <div class="section-heading simulation-heading">
+        <div><p class="section-kicker">T6 · Simulación reproducible</p><h2>Frecuencia experimental de F</h2></div>
+        <form class="seed-control" id="seed-form">
+          <label for="seed">Semilla</label>
+          <input id="seed" name="seed" type="number" min="0" max="4294967295" value="321" required>
+          <button class="button button-primary" type="submit">Simular</button>
+        </form>
+      </div>
+      <div class="simulation-layout">
+        <div class="table-wrap"><table id="simulation-table"><caption>Prefijos de una secuencia uniforme de 1000 sorteos</caption></table></div>
+        <aside class="simulation-chart" aria-label="Error absoluto por tamaño de simulación">
+          <h3>Error absoluto frente a P(F) = 0,1250</h3>
+          <div id="error-bars"></div>
+          <p id="simulation-protocol" class="note">—</p>
+        </aside>
+      </div>
+      <p class="note simulation-explanation" id="simulation-explanation">—</p>
+      <div class="validation-box">
+        <div><p class="section-kicker">Autocomprobación</p><h3 id="validation-title">Validando…</h3></div>
+        <div class="validation-list" id="validation-list"></div>
+      </div>
+    </section>
+
+    <section class="panel decision-panel" id="t7">
+      <div class="decision-title">
+        <p class="section-kicker">T7 · Dictamen y defensa</p>
+        <h2>Seleccionar B, corregir A</h2>
+        <p>B no tiene el menor promedio, pero es la única que satisface a la vez la cola máxima y la tasa de retrasos.</p>
+      </div>
+      <div class="evidence-grid" id="evidence-grid"></div>
+      <div class="defense-grid">
+        <article><h3>Por qué la media no basta</h3><p>La media resume el centro y puede ocultar respuestas incompatibles con el plazo. Los valores 125, 150 y 205 ms elevan P90 de A por encima del límite.</p></article>
+        <article><h3>Limitación</h3><p id="limitation">—</p></article>
+        <article><h3>Mejora verificable</h3><p id="improvement">—</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="datos">
+      <div class="section-heading">
+        <div><p class="section-kicker">Fuente única</p><h2>Los 24 escenarios pareados</h2></div>
+        <p>Todos los módulos usan esta misma tabla; no hay cifras escritas manualmente en los resultados.</p>
+      </div>
+      <div class="table-wrap data-table-wrap"><table id="data-table"><caption>Datos originales del Caso 1</caption></table></div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Caso 1 · Apolo 11</strong> — Herramienta académica reproducible.</p>
+    <p>Cuantiles: h = 1 + (n − 1)p · Varianza muestral: n − 1 · Decisiones con precisión completa.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
+

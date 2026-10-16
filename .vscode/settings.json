@@ -1,0 +1,8 @@
+{
+  "python.defaultInterpreterPath": "C:\\Users\\linko\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+  "python.terminal.executeInFileDir": true,
+  "code-runner.fileDirectoryAsCwd": true,
+  "code-runner.executorMap": {
+    "python": "\"C:\\Users\\linko\\AppData\\Local\\Programs\\Python\\Python314\\python.exe\" -u"
+  }
+}

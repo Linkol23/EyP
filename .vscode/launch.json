@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Caso 1: abrir aplicación web",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/03_Programa_Web/programa_web_caso1/app.py",
+      "cwd": "${workspaceFolder}/03_Programa_Web/programa_web_caso1",
+      "python": "C:\\Users\\linko\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "args": ["--host", "192.168.56.1", "--port", "8765", "--open"],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}

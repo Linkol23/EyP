@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: apolo11-estadistica
+    runtime: python
+    plan: free
+    rootDir: 03_Programa_Web/programa_web_caso1
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
